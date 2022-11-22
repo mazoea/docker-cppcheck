@@ -11,12 +11,14 @@ ENV URL=https://github.com/danmar/cppcheck/archive/refs/tags/2.9.tar.gz \
 
 RUN wget --no-check-certificate -nv $URL -O $FILE && \
     tar xvzf $FILE && \
-    rm -f $FILE
-
-RUN cd $PACKAGE && \
+    rm -f $FILE && \
+    cd $PACKAGE && \
     mkdir build && cd build && \
     cmake -DUSE_MATCHCOMPILER=ON -DHAVE_RULES=ON .. && \
-    cmake --build .
+    cmake --build . && \
+    cmake --install . && \
+    cd .. && \
+    rm -rf $PACKAGE
 
 WORKDIR /opt/src/
 
