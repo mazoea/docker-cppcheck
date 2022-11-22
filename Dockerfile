@@ -19,5 +19,8 @@ RUN cd $PACKAGE && \
     cmake --build .
 
 WORKDIR /opt/src/
+
+RUN cppcheck --version
+
 ENTRYPOINT [ "cppcheck" ]
 CMD [ "--version" ]
