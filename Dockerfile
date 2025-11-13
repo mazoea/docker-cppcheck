@@ -6,7 +6,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*     
 
 ENV URL=https://github.com/danmar/cppcheck/archive/refs/tags/2.18.0.tar.gz \
-    PACKAGE=cppcheck-2.18 \
+    PACKAGE=cppcheck-2.18.0 \
     FILE=cppcheck.tar.gz
 
 RUN wget --no-check-certificate -nv $URL -O $FILE && \
