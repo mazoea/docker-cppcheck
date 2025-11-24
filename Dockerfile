@@ -1,27 +1,27 @@
-FROM ubuntu:20.04
+FROM alpine:latest
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential wget python3 libpcre3 libpcre3-dev cmake && \
-    rm -rf /var/lib/apt/lists/*     
+RUN apk add --no-cache \
+        build-base wget python3 pcre-dev cmake && \
+    rm -rf /var/cache/apk/*
 
 ENV URL=https://github.com/danmar/cppcheck/archive/refs/tags/2.18.0.tar.gz \
     PACKAGE=cppcheck-2.18.0 \
     FILE=cppcheck.tar.gz
 
+WORKDIR /opt/src/
+
 RUN wget --no-check-certificate -nv $URL -O $FILE && \
-    tar xvzf $FILE && \
+    tar xzf $FILE && \
     rm -f $FILE && \
     cd $PACKAGE && \
     mkdir build && cd build && \
     cmake -DUSE_MATCHCOMPILER=ON -DHAVE_RULES=ON .. && \
     cmake --build . && \
     cmake --install . && \
-    cd .. && \
-    rm -rf $PACKAGE
+    rm -rf /opt/src/$PACKAGE
 
-WORKDIR /opt/src/
-
+RUN adduser -D cppcheck
+USER cppcheck
 RUN cppcheck --version
 
 ENTRYPOINT [ "cppcheck" ]
