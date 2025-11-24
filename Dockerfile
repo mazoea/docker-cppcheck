@@ -1,7 +1,7 @@
 FROM alpine:latest
 
-RUN apk add --no-cache \
-        build-base wget python3 pcre-dev cmake && \
+RUN apk update && \
+    apk add --no-cache build-base wget python3 pcre-dev cmake && \
     rm -rf /var/cache/apk/*
 
 ENV URL=https://github.com/danmar/cppcheck/archive/refs/tags/2.18.0.tar.gz \
@@ -20,8 +20,8 @@ RUN wget --no-check-certificate -nv $URL -O $FILE && \
     cmake --install . && \
     rm -rf /opt/src/$PACKAGE
 
-RUN adduser -D cppcheck
-USER cppcheck
+RUN adduser -D maz
+USER maz
 RUN cppcheck --version
 
 ENTRYPOINT [ "cppcheck" ]
